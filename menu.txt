@@ -1,0 +1,127 @@
+#!/bin/bash
+
+pause(){
+    read -p "A folytatashoz nyomd meg az [ENTER] billentyut..." fackEnterKey
+}
+
+teglatest(){
+    echo "Add meg a teglatest oldalainak ertekeit:"
+    echo -n "a oldal:"
+    read a
+    
+    echo -n "b oldal:"
+    read b
+
+    echo -n "c oldal:"
+    read c
+
+    ((V=a*b*c))
+    ((A=2*(a*b+a*c+b*c)))
+
+    echo "A teglatest terfogata: $V"
+    echo "A teglatest felszine: $A"
+	pause
+}
+
+naptar(){
+    echo -n "Add meg az esemeny nevet: "
+    read esemenyNev
+
+    echo -n "Add meg az esemeny datumat: "
+    read esemenyDatum
+
+    echo -n "Add meg az esemeny kezdetet: "
+    read K
+
+    echo -n "Add meg az esemeny veget: "
+    read V
+
+    echo ""
+
+    echo "Az esemeny neve: $esemenyNev"
+    echo "Az esemeny idopontja: $esemenyDatum"
+    echo "Az esemeny kezdete = $K , vege = $V"
+
+    echo ""
+
+    echo "Szeretned menteni? (igen - nem)"
+    read mentes
+
+    if [ "$mentes" == "igen" ];
+    then
+	echo "Az esemeny neve:" $esemenyNev >> Esemeny.txt
+	echo "Az esemeny datuma:" $esemenyDatum >> Esemeny.txt
+	echo "Az esemeny kezdete:" $K " , vege:" $V >> Esemeny.txt
+    else
+	echo "Az adatokat nem mentettuk el!"
+    fi
+	pause
+}
+
+nagyito(){
+
+    echo "A beolvasott karaktereket nagybetusre alakitja at."
+    echo "A futast a vege szoval tudjuk leallitani."
+    while read SOR ; do
+	[ $SOR = "vege" ] && break
+	echo $SOR | tr '[a-z]' '[A-Z]'
+    done
+	pause
+}
+
+visszaszamlalo(){
+    echo -n "Add meg honnantol kezdve szamoljak vissza: "
+    read kezdo
+    echo -n "Meddig?"
+    read meddig
+    for (( counter=$kezdo; counter>$meddig; counter--  ))
+    do
+	echo -n "$counter "
+	sleep 1
+	printf "\n"
+    done
+	pause
+}
+
+hack(){
+   while :
+   do
+	echo "Nyomd meg a [CTRL+C] gombot a leallitashoz..."
+	sleep 2
+	find /*
+   done
+}
+
+show_menus(){
+    clear
+    echo "~~~~~~~~~~~~~~~~~~~"
+    echo " M A I N - M E N U "
+    echo "~~~~~~~~~~~~~~~~~~~"
+    echo "1. Teglatest"
+    echo "2. Naptar"
+    echo "3. Nagyito"
+    echo "4. Visszaszamlalo"
+    echo "5. Hack"
+    echo "6. Exit"
+}
+
+read_options(){
+    local choice
+    echo ""
+    read -p "Mit valaszt?  1 - 6: " choice
+    case $choice in
+	1) teglatest ;;
+	2) naptar ;;
+	3) nagyito ;;
+	4) visszaszamlalo ;;
+	5) hack ;;
+	6) exit 0 ;;
+    esac
+}
+
+
+while true
+do
+    show_menus
+    read_options
+done
